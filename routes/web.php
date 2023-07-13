@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\HibajegyController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,5 +14,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('hibajegyek');
+});
+
+Route::controller(HibajegyController::class)->group(function () {
+    Route::post('/uj_hibajegy', 'letrehoz');
 });

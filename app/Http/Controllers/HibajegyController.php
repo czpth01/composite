@@ -13,13 +13,30 @@ class HibajegyController extends Controller
 
     public function letrehoz(Request $request)
     {
+        //validálás
+        $this->validate($request, 
+        ['ugyfel' => 'required',
+        'email' => 'required|email',
+        'targy' => 'required',
+        'tartalom' => 'required'],
+        
+        ['ugyfel.required' => 'Cégnév nincs kitöltve!',
+        'email.required' => 'E-mail nincs kitöltve vagy nem valid!',
+        'targy.required' => 'Tárgy nincs kitöltve!',
+        'tartalom.required' => 'Hibajegy leírása nincs kitöltve!']
+        );
+        
         //ha van már ilyen névvel ügyfél, akkor visszaadjuk annak az id-ját, ha nincs, létrehozzuk
         $ugyfel_nev = $request->input('ugyfel');
+        $email = $request->input('email');
         $ugyfel = DB::table('ugyfelek')->where('nev', $ugyfel_nev)->first();
         if (isset($ugyfel->id)) {
             $ugyfel_id = $ugyfel->id;
         } else {
-            $data = array('nev' => $ugyfel_nev);
+            $data = array(
+            'nev' => $ugyfel_nev,
+            'email' => $email
+            );
             DB::table('ugyfelek')->insert($data);
             $ugyfel_id = DB::getPdo()->lastInsertId();
         }
@@ -56,6 +73,8 @@ class HibajegyController extends Controller
             'esedekesseg' => $esedekesseg,
             );
         DB::table('hibajegyek')->insert($data);
+        
+        return back()->with('success','Hibajegy sikeresen létrehozva! 2 munkanapon belül válaszolunk.');
     }
 
 }

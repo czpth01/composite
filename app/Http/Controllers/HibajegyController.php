@@ -48,7 +48,6 @@ class HibajegyController extends Controller
         ///////
         //-----> tehát 2 napnak felel meg a 16 óra, azaz 2 napot kell hozzáadnunk a jelenlegi dátumhoz, kivéve csütörtök-vasárnapra esik
         $most = Carbon::now();
-        $most = Carbon::parse("2023-07-13 08:32");
         $ora = substr($most, 11, 2);
         //ha munkaidőben vagyunk elég simán 2 hétköznapot hozzáadni
         if ($ora > 9 && $ora < 17) {
@@ -71,11 +70,26 @@ class HibajegyController extends Controller
             'targy' => $targy,
             'tartalom' => $tartalom,
             'esedekesseg' => $esedekesseg,
+            'letrehozva' => $most
             );
         DB::table('hibajegyek')->insert($data);
         
         return back()->with('success','Hibajegy sikeresen létrehozva! 2 munkanapon belül válaszolunk.');
     }
-
+    
+    public function hibajegy_lista(){
+        $hibajegyek = DB::select('SELECT hibajegyek.*, ugyfelek.nev AS ugyfel 
+        FROM hibajegyek 
+        JOIN ugyfelek ON ugyfelek.id = hibajegyek.ugyfel_id');
+        return view('hibajegy_lista',['hibajegyek'=>$hibajegyek]);
+    }
+    
+    public function ugyfel_lista(){
+        $ugyfelek = DB::select('SELECT ugyfelek.*, COUNT(hibajegyek.id) AS hibajegyek
+        FROM ugyfelek 
+        JOIN hibajegyek ON hibajegyek.ugyfel_id = ugyfelek.id 
+        GROUP BY ugyfelek.id');
+        return view('ugyfel_lista',['ugyfelek'=>$ugyfelek]);
+    }
 }
 ?>

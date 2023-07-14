@@ -1,0 +1,9 @@
+- composite sql adatbázist kell importálni
+- kezdőkönyvtár a composite_git a projektben
+- A kezdőlapon lehet beküldeni a hibajegyeket a form kitöltése után.
+- Admin bejelentkezés 2 felhasználóval lehetséges jelenleg:
+Péter / Admin1
+Composite / Admin2
+- Bejelentkezés után megjelennek az eddig létrehozott hibajegyek és 2 menüpont: Hibajegyek, Ügyfelek
+- Hibajegyeknél listázzuk az eddig létrehozott hibajegyeket, a lista szűrhető, beállítható hogy hány sor legyen laponként és lapozható is
+- Ügyfeleknél listázzuk az eddigi ügyfeleket, a lista szűrhető, beállítható hogy hány sor legyen laponként és lapozható is
